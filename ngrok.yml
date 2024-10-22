@@ -1,0 +1,10 @@
+version: "2"
+authtoken: 2Vd6uDSM2zbGKCXrlWteyjMQIUr_7dfGowMQzETwSQRwGYWgX
+web_addr: 0.0.0.0:3000
+update: false
+log: stdout
+
+tunnels:
+  app:
+    addr: localhost:3000
+    proto: http

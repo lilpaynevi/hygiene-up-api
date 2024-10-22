@@ -1,0 +1,254 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ROLES_USERS {
+  OWNER
+  EDITOR
+  STAFF
+}
+
+// PRINCIPAL
+model User {
+  id           String        @id @default(uuid())
+  firstName    String
+  lastName     String
+  createdAt    DateTime      @default(now())
+  restaurant   Restaurant?   @relation(fields: [restaurantId], references: [id])
+  updatedAt    DateTime      @updatedAt
+  restaurantId String
+  roles        ROLES_USERS[]
+}
+
+model Tracability {
+  id           Int        @id @default(autoincrement())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  data         Json[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Restaurant {
+  id          String        @id @default(uuid())
+  username    String        @unique
+  password    String
+  address     String?
+  phone       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  User        User[]
+  modules     MODULES[]
+  Temperature Temperature[]
+  Equipments  Equipments[]
+  Staffers    Staffers[]
+  Suppliers   Suppliers[]
+  Surfaces    Surfaces[]
+  Tracability Tracability[]
+  Zones       Zones[]
+  Cleaning    Cleaning[]
+  Delivery    Delivery[]
+  Products    Products[]
+}
+
+model Temperature {
+  id           Int        @id @default(autoincrement())
+  data         Json[]
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  restaurantId String
+}
+
+model Cleaning {
+  id           String     @id @default(uuid())
+  data         Json[]
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Type_Equipment {
+  id           Int          @id @default(autoincrement())
+  title        String
+  max          Float
+  min          Float
+  between_desc String
+  Equipments   Equipments[]
+}
+
+// PRINCIPAL
+model Equipments {
+  id               String          @id @default(uuid())
+  title            String
+  linkTo           MODULES
+  type_equipment   Type_Equipment? @relation(fields: [type_EquipmentId], references: [id])
+  type_EquipmentId Int?
+  restaurant       Restaurant      @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  restaurantId     String
+}
+
+// PRINCIPAL
+model Staffers {
+  id           Int        @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  photo        String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  restaurantId String
+}
+
+// PRINCIPAL
+model Suppliers {
+  id           Int        @id @default(autoincrement())
+  name         String
+  address      String
+  phone        Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  email        String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  restaurantId String
+  Delivery     Delivery[]
+}
+
+// PRINCIPAL
+model Products {
+  id                        Int                         @id @default(autoincrement())
+  name                      String
+  type_product              Type_Products               @relation(fields: [type_ProductsId], references: [id])
+  type_ProductsId           Int
+  isDLC                     Boolean?
+  quantityDLC               Int?
+  typeQuantityDLC           String?
+  isFinished                Boolean?
+  finishedIngredients       FinishedIngredient[]        @relation("ProductFinishedIngredients")
+  ProductFinishedIngredient ProductFinishedIngredient[]
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  Delivery                  Delivery[]
+  restaurant                Restaurant                  @relation(fields: [restaurantId], references: [id])
+  restaurantId              String
+}
+
+model Type_Products {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  Products    Products[]
+  Delivery    Delivery[]
+}
+
+model FinishedIngredient {
+  id                        Int                         @id @default(autoincrement())
+  name                      String
+  value                     Int
+  type_value                Type_Products_Value
+  products                  Products[]                  @relation("ProductFinishedIngredients")
+  ProductFinishedIngredient ProductFinishedIngredient[]
+}
+
+model ProductFinishedIngredient {
+  productId            Int
+  finishedIngredientId Int
+  product              Products           @relation(fields: [productId], references: [id])
+  finishedIngredient   FinishedIngredient @relation(fields: [finishedIngredientId], references: [id])
+
+  @@id([productId, finishedIngredientId])
+}
+
+// PRINCIPAL
+model Zones {
+  id           String     @id @default(uuid())
+  title        String
+  Surfaces     Surfaces[]
+  Restaurants  Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  restaurantId String
+}
+
+model Surfaces {
+  id                Int             @id @default(autoincrement())
+  surface           String
+  zone              Zones           @relation(fields: [zoneId], references: [id])
+  zoneId            String
+  Restaurant        Restaurant?     @relation(fields: [restaurantId], references: [id])
+  restaurantId      String?
+  frequencyQuantity Int?
+  frequencyType     TYPE_FREQUENCY?
+}
+
+// PRINCIPAL
+model Delivery {
+  id              Int              @id @default(autoincrement())
+  comments        String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  restaurant      Restaurant       @relation(fields: [restaurantId], references: [id])
+  restaurantId    String
+  supplier        Suppliers        @relation(fields: [suppliersId], references: [id])
+  suppliersId     Int
+  typeProductId   Type_Products    @relation(fields: [type_ProductsId], references: [id])
+  type_ProductsId Int
+  Product         Products         @relation(fields: [productsId], references: [id])
+  productsId      Int
+  number_lot      String?
+  conformity      TYPE_CONFORMITY?
+}
+
+enum TYPE_CONFORMITY {
+  QUANTITY_NO_CONFORMITY
+  DLC_SHORT
+  DLC_DEPASSED
+  ABS_NUMBER_AGREMENT
+  PACKAGE_PERCE
+  PACKAGE_ENDOMMAGED
+  DENREE_IMPROPRES
+  TEMP_CAR_NO_CONFORMITY
+  CAR_IMPROPRE
+  TEMP_DELIVERY_NO_CONFORMITY
+}
+
+enum TYPE_FREQUENCY {
+  JOUR
+  MOIS
+  ANNEE
+}
+
+enum Type_Products_Value {
+  QUANTITE
+  LITRES
+  KILOGRAMMES
+  GRAMMES
+  CENTILITRES
+  MILILITRES
+}
+
+enum MODULES {
+  TEMPERATURE
+  OIL
+  TRACABILITY
+  FREEZING
+  DELIVERY
+  MAINTAIN_TEMPERATURE
+  MANAGEMENT_OIL
+  CLEANING
+  PRINTER
+}

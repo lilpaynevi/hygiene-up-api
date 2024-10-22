@@ -1,0 +1,36 @@
+version: '3'
+services:
+  hup_postgres:
+    image: postgres:14-alpine
+    container_name: hup_postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=HP@hup2024!
+      - POSTGRES_USER=lilpayne
+      - POSTGRES_DB=hygieneup
+  hup_database:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hup_database
+    # environment:
+    #   - PORT=${PORT}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - hup_postgres
+    volumes:
+      - ./:/server/
+      - /server/node_modules
+  adminer:
+    image: adminer
+    restart: always
+    container_name: hup_adminer
+    ports:
+      - '8080:8080'
+volumes:
+  pgdata: 
+  server: 

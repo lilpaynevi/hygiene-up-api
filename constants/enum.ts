@@ -1,0 +1,32 @@
+export enum ROLES_USERS {
+  OWNER,
+  EDITOR,
+  STAFF,
+}
+
+export enum TYPE_FREQUENCY {
+  JOUR,
+  MOIS,
+  ANNEE,
+}
+
+export enum Type_Products_Value {
+  QUANTITE,
+  LITRES,
+  KILOGRAMMES,
+  GRAMMES,
+  CENTILITRES,
+  MILILITRES,
+}
+
+export enum MODULES {
+  TEMPERATURE,
+  OIL,
+  TRACABILITY,
+  FREEZING,
+  DELIVERY,
+  MAINTAIN_TEMPERATURE,
+  MANAGEMENT_OIL,
+  CLEANING,
+  PRINTER,
+}
