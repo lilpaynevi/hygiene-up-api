@@ -15,7 +15,9 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { GetUser } from 'src/decorator/get-user.decorator';
 import { IProducts } from './interfaces/products.interfaces';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(
@@ -31,6 +33,11 @@ export class ProductsController {
   @Get('/me')
   MyProducts(@GetUser() user: any) {
     return this.productsService.MyProducts(user);
+  }
+
+  @Get('/types')
+  TypeProducts() {
+    return this.productsService.TypeProducts();
   }
 
   @Get()

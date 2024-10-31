@@ -1,15 +1,15 @@
-FROM node:18
-# ENV PNPM_HOME="/pnpm"
+
+FROM node:18 AS base
 WORKDIR /server
-# RUN npm install -g pnpm
-# RUN npm install -g @nestjs/cli
-
 COPY package.json ./
-
 RUN npm install
-
-RUN npx primsa migrate dev
-
 COPY . .
 
-CMD [ "npm", "run", "start:dev" ]
+# Development stage
+FROM base AS development
+CMD ["npm", "run", "start:dev"]
+
+# Production stage
+FROM base AS production
+RUN npm install --only=production
+CMD ["npm", "run", "start:prod"]

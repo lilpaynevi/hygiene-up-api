@@ -5,7 +5,9 @@ import { CreateRestaurantDto } from '../restaurants/dto/create-restaurant.dto';
 import { LoginUserDto } from '../restaurants/dto/login-restaurant-dto';
 import { JwtAuthGuard } from './auth.guard';
 import { GetUser } from 'src/decorator/get-user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

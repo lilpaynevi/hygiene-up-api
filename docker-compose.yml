@@ -16,6 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: hup_database
+    restart: unless-stopped
     # environment:
     #   - PORT=${PORT}
     ports:
@@ -31,6 +32,14 @@ services:
     container_name: hup_adminer
     ports:
       - '8080:8080'
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    volumes:
+      - ./ngrok.yml:/home/ngrok/.ngrok2/ngrok.yml
+    ports:
+      - '4040:4040'
+    command: ['sh', '-c', 'ngrok http hup_database:3000']
 volumes:
-  pgdata: 
-  server: 
+  pgdata:
+  server:

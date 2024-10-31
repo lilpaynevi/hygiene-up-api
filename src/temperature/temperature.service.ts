@@ -16,7 +16,11 @@ export class TemperatureService implements ITemperature {
   }
 
   async findAll(): Promise<Temperature[]> {
-    return this.prisma.temperature.findMany();
+    return this.prisma.temperature.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   async MyTemperatures(t: any): Promise<Temperature[] | null> {

@@ -15,7 +15,9 @@ import { UpdateTemperatureDto } from './dto/update-temperature.dto';
 import { ITemperature } from './interfaces/temperature.interface';
 import { GetUser } from 'src/decorator/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Temperature')
 @Controller('temperature')
 export class TemperatureController {
   constructor(

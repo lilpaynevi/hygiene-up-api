@@ -14,6 +14,8 @@ import { SuppliersModule } from './suppliers/suppliers.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { ProductsModule } from './products/products.module';
 import { TracabilityModule } from './tracability/tracability.module';
+import { FilesModule } from './files/files.module';
+import { OilModule } from './oil/oil.module';
 
 @Module({
   imports: [
@@ -32,7 +34,9 @@ import { TracabilityModule } from './tracability/tracability.module';
     SuppliersModule,
     DeliveryModule,
     ProductsModule,
-    TracabilityModule
+    TracabilityModule,
+    FilesModule,
+    OilModule
   ],
   controllers: [AppController],
   providers: [AppService],

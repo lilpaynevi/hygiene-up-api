@@ -6,5 +6,6 @@ export interface IProducts {
   findAll(): Promise<CreateProductDto[] | null>;
   findOne(id: number): Promise<CreateProductDto | null>;
   MyProducts(userId: any): Promise<CreateProductDto[] | null>;
+  TypeProducts(): Promise<object>;
   remove(id: number): Promise<CreateProductDto | null>;
 }

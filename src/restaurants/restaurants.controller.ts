@@ -11,7 +11,9 @@ import {
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 import { IRestaurant } from './interfaces/restaurants.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Restaurant')
 @Controller('restaurants')
 export class RestaurantsController {
   constructor(
