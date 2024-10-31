@@ -5,7 +5,9 @@ import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { IEquipment } from './interfaces/equipment.interfaces';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { GetUser } from 'src/decorator/get-user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Equipments')
 @Controller('equipments')
 export class EquipmentsController {
   constructor(@Inject('IEquipment') private readonly equipmentsService: IEquipment) {}

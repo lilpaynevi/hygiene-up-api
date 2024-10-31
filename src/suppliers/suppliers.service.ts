@@ -21,6 +21,9 @@ export class SuppliersService implements ISuppliers {
       where: {
         restaurantId: user.sub,
       },
+      orderBy: {
+        name: 'desc'
+      }
     });
   }
 

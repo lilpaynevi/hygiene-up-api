@@ -1,5 +1,5 @@
 export class CreateTracabilityDto {
-  id?: number;
-  data: object[];
+  id?: string;
+  data: any[];
   restaurantId: string;
 }

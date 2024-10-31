@@ -17,7 +17,7 @@ export class EquipmentsService implements IEquipment {
   findAll() {
     return this.prisma.equipments.findMany({
       orderBy: {
-        title: 'desc'
+        title: 'asc'
       }
     })
   }
@@ -31,7 +31,7 @@ export class EquipmentsService implements IEquipment {
         type_equipment: true
       },
       orderBy: {
-        title: 'desc'
+        title: 'asc'
       }
     })
   }

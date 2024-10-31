@@ -3,6 +3,8 @@
 /node_modules
 /build
 /pgdata
+/photos
+ngrok.yml
 # Logs
 logs
 *.log

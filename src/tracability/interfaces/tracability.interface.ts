@@ -8,4 +8,5 @@ export interface ITracability {
   findOne(id: number): Promise<CreateTracabilityDto | null>;
   update(id: number, data: UpdateTracabilityDto): Promise<CreateTracabilityDto>;
   remove(id: number): Promise<CreateTracabilityDto>;
+  uploadFiles(files: any): Promise<any>;
 }

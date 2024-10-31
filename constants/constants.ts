@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 export const typeEquipment = [
   {
     title: 'Enceinte positive',
@@ -80,3 +82,4 @@ export const typeProduct = [
   },
 ];
 
+export const FILE_FOLDER_DIR = join(process.cwd(), 'photos');

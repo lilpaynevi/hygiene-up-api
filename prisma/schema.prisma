@@ -29,15 +29,20 @@ model User {
   updatedAt    DateTime      @updatedAt
   restaurantId String
   roles        ROLES_USERS[]
+  Cleaning     Cleaning[]
+  Temperature  Temperature[]
+  Tracability  Tracability[]
 }
 
 model Tracability {
-  id           Int        @id @default(autoincrement())
+  id           String     @id @default(uuid())
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String
+  user         User?      @relation(fields: [userId], references: [id])
   data         Json[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  userId       String?
 }
 
 model Restaurant {
@@ -48,6 +53,8 @@ model Restaurant {
   phone       String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  disabledAt  DateTime?
+  isActive    Boolean       @default(true)
   User        User[]
   modules     MODULES[]
   Temperature Temperature[]
@@ -66,9 +73,11 @@ model Temperature {
   id           Int        @id @default(autoincrement())
   data         Json[]
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  user         User?      @relation(fields: [userId], references: [id])
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   restaurantId String
+  userId       String?
 }
 
 model Cleaning {
@@ -76,8 +85,10 @@ model Cleaning {
   data         Json[]
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String
+  user         User?      @relation(fields: [userId], references: [id])
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  userId       String?
 }
 
 model Type_Equipment {
@@ -187,9 +198,9 @@ model Zones {
 model Surfaces {
   id                Int             @id @default(autoincrement())
   surface           String
-  zone              Zones           @relation(fields: [zoneId], references: [id])
+  zone              Zones           @relation(fields: [zoneId], references: [id], onDelete: Cascade)
   zoneId            String
-  Restaurant        Restaurant?     @relation(fields: [restaurantId], references: [id])
+  Restaurant        Restaurant?     @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId      String?
   frequencyQuantity Int?
   frequencyType     TYPE_FREQUENCY?
@@ -197,20 +208,21 @@ model Surfaces {
 
 // PRINCIPAL
 model Delivery {
-  id              Int              @id @default(autoincrement())
-  comments        String?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  restaurant      Restaurant       @relation(fields: [restaurantId], references: [id])
-  restaurantId    String
-  supplier        Suppliers        @relation(fields: [suppliersId], references: [id])
-  suppliersId     Int
-  typeProductId   Type_Products    @relation(fields: [type_ProductsId], references: [id])
-  type_ProductsId Int
-  Product         Products         @relation(fields: [productsId], references: [id])
-  productsId      Int
-  number_lot      String?
-  conformity      TYPE_CONFORMITY?
+  id             Int              @id @default(autoincrement())
+  comments       String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  restaurant     Restaurant       @relation(fields: [restaurantId], references: [id])
+  restaurantId   String
+  supplier       Suppliers        @relation(fields: [supplierId], references: [id])
+  supplierId     Int
+  typeProductId  Type_Products    @relation(fields: [type_ProductId], references: [id])
+  type_ProductId Int
+  Product        Products         @relation(fields: [productsId], references: [id])
+  productsId     Int
+  number_lot     String?
+  temperature    Int?
+  conformity     TYPE_CONFORMITY?
 }
 
 enum TYPE_CONFORMITY {

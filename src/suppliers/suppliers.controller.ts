@@ -15,7 +15,9 @@ import { UpdateSupplierDto } from './dto/update-supplier.dto';
 import { ISuppliers } from './interfaces/suppliers.interfaces';
 import { GetUser } from 'src/decorator/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Suppliers')
 @Controller('suppliers')
 export class SuppliersController {
   constructor(

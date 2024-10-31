@@ -1,10 +1,10 @@
 version: "2"
 authtoken: 2Vd6uDSM2zbGKCXrlWteyjMQIUr_7dfGowMQzETwSQRwGYWgX
-web_addr: 0.0.0.0:3000
+web_addr: 0.0.0.0:4000
 update: false
 log: stdout
 
 tunnels:
-  app:
+  hup_database:
     addr: localhost:3000
     proto: http

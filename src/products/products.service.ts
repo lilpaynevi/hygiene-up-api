@@ -14,23 +14,38 @@ export class ProductsService {
   }
 
   findAll() {
-    return this.prisma.products.findMany({})
+    return this.prisma.products.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
   MyProducts(user: any) {
     return this.prisma.products.findMany({
       where: {
-        restaurantId: user.sub
-      }
-    })
+        restaurantId: user.sub,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+  }
+
+  TypeProducts() {
+    return this.prisma.type_Products.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 
   findOne(id: number) {
     return this.prisma.products.findUnique({
-      where : {
-        id
-      }
-    })
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {

@@ -14,7 +14,11 @@ export class TracabilityService {
   }
 
   findAll() {
-    return this.prisma.tracability.findMany({});
+    return this.prisma.tracability.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   MyTracability(user: any) {
@@ -22,10 +26,17 @@ export class TracabilityService {
       where: {
         restaurantId: user.sub,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
-  findOne(id: number) {
+  uploadFiles(files: any) {
+    return { filename: 'dzdz', files };
+  }
+
+  findOne(id: string) {
     return this.prisma.tracability.findUnique({
       where: {
         id: id,
@@ -33,7 +44,7 @@ export class TracabilityService {
     });
   }
 
-  update(id: number, updateTracabilityDto: UpdateTracabilityDto) {
+  update(id: string, updateTracabilityDto: UpdateTracabilityDto) {
     return this.prisma.tracability.update({
       data: updateTracabilityDto,
       where: {
@@ -42,7 +53,7 @@ export class TracabilityService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.tracability.delete({
       where: {
         id,

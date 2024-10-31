@@ -10,9 +10,11 @@ import {
 } from '@nestjs/common';
 import { TypeEquipmentService } from './type_equipment.service';
 import { ITypeEquipment } from './interfaces/type_equipment.interface';
-import { ApiBasicAuth } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiBasicAuth()
+@ApiTags('Type Equipment')
+
 @Controller('type-equipment')
 export class TypeEquipmentController {
   constructor(
