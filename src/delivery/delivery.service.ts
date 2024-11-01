@@ -16,7 +16,7 @@ export class DeliveryService implements IDelivery {
     return this.prisma.delivery.findMany({});
   }
 
-  MyDeliverys(user: any): Promise<Delivery[] | null> {
+  async MyDeliverys(user: any): Promise<any> {
     return this.prisma.delivery.findMany({
       where: {
         restaurantId: user.sub,

@@ -32,6 +32,7 @@ model User {
   Cleaning     Cleaning[]
   Temperature  Temperature[]
   Tracability  Tracability[]
+  Delivery     Delivery[]
 }
 
 model Tracability {
@@ -163,7 +164,6 @@ model Type_Products {
   name        String
   description String
   Products    Products[]
-  Delivery    Delivery[]
 }
 
 model FinishedIngredient {
@@ -208,21 +208,21 @@ model Surfaces {
 
 // PRINCIPAL
 model Delivery {
-  id             Int              @id @default(autoincrement())
-  comments       String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  restaurant     Restaurant       @relation(fields: [restaurantId], references: [id])
-  restaurantId   String
-  supplier       Suppliers        @relation(fields: [supplierId], references: [id])
-  supplierId     Int
-  typeProductId  Type_Products    @relation(fields: [type_ProductId], references: [id])
-  type_ProductId Int
-  Product        Products         @relation(fields: [productsId], references: [id])
-  productsId     Int
-  number_lot     String?
-  temperature    Int?
-  conformity     TYPE_CONFORMITY?
+  id           Int              @id @default(autoincrement())
+  comments     String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  restaurant   Restaurant       @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  supplier     Suppliers        @relation(fields: [supplierId], references: [id])
+  supplierId   Int
+  Product      Products         @relation(fields: [productsId], references: [id])
+  productsId   Int
+  user         User?            @relation(fields: [userId], references: [id])
+  userId       String?
+  number_lot   String?
+  temperature  Int?
+  conformity   TYPE_CONFORMITY?
 }
 
 enum TYPE_CONFORMITY {

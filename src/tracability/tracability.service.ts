@@ -29,6 +29,9 @@ export class TracabilityService {
       orderBy: {
         createdAt: 'desc',
       },
+      include: {
+        user: true,
+      }
     });
   }
 
